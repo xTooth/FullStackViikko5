@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
-
+import Togglable from './components/Togglable'
+import LoginForm from './components/LoginForm'
 
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [title,setTitle] = useState('')
-  const [author,setAuthor] = useState('')
-  const [url,setUrl] = useState('')
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -52,32 +53,14 @@ const App = () => {
 
 
   const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        käyttäjätunnus
-          <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        salasana
-          <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">kirjaudu</button>
-    </form>
+    <LoginForm setUsername={setUsername} setPassword={setPassword} handleLogin={handleLogin} username={username} password={password} />
   )
+
   function logout() {
     window.localStorage.clear()
     window.location.reload(true)
   }
+
   const blogForm = () => (
     <div>
 
@@ -90,7 +73,7 @@ const App = () => {
     <form onSubmit={handleBlogAdd}>
       <div>
         Title
-          <input
+        <input
           type="text"
           value={title}
           name="title"
@@ -99,7 +82,7 @@ const App = () => {
       </div>
       <div>
         Author
-          <input
+        <input
           type="text"
           value={author}
           name="author"
@@ -108,7 +91,7 @@ const App = () => {
       </div>
       <div>
         URL
-          <input
+        <input
           type="text"
           value={url}
           name="url"
@@ -117,7 +100,7 @@ const App = () => {
       </div>
       <button type="submit">luo uusi blogi</button>
     </form>
-    
+
   )
   return (
     <div>
@@ -130,7 +113,9 @@ const App = () => {
           <h2>blogs</h2>
           <p>{user.name} logged in</p >
           <button type="submit" onClick={logout}>Kirjaudu ulos</button>
-          {addBlog()}
+          <Togglable buttonLabel='luo uusi blogi'>
+            {addBlog()}
+          </Togglable>
           {blogForm()}
         </div>
       }
