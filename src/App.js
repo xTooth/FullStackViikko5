@@ -11,9 +11,9 @@ const App = () => {
   const password = useField('text')
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const title = useField('text')
+  const author = useField('text')
+  const url= useState('text')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -42,11 +42,13 @@ const App = () => {
       blogService.setToken(user.token)
       setUser(user)
     } catch (exception) {
+      username.resetter()
+      password.resetter()
       console.log('käyttäjätunnus tai salasana virheellinen')
     }
   }
   function handleBlogAdd() {
-    const newBlog = { author: author, title: title, url: url, likes: 0, user: user.id }
+    const newBlog = { author: author.value, title: title.value, url: url.value, likes: 0, user: user.id }
     blogService.create(newBlog)
   }
 
@@ -74,27 +76,27 @@ const App = () => {
         Title
         <input
           type="text"
-          value={title}
+          value={title.value}
           name="title"
-          onChange={({ target }) => setTitle(target.value)}
+          onChange= {title.onChange}
         />
       </div>
       <div>
         Author
         <input
           type="text"
-          value={author}
+          value={author.value}
           name="author"
-          onChange={({ target }) => setAuthor(target.value)}
+          onChange={author.onChange}
         />
       </div>
       <div>
         URL
         <input
           type="text"
-          value={url}
+          value={url.value}
           name="url"
-          onChange={({ target }) => setUrl(target.value)}
+          onChange={url.onChange}
         />
       </div>
       <button type="submit">luo uusi blogi</button>
