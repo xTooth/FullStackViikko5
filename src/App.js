@@ -4,10 +4,11 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
+import { useField } from './hooks/index'
 
 const App = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const username = useField('text')
+  const password = useField('text')
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [title, setTitle] = useState('')
@@ -33,15 +34,13 @@ const App = () => {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username, password,
+        username: username.value , password: password.value
       })
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       )
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
     } catch (exception) {
       console.log('käyttäjätunnus tai salasana virheellinen')
     }
@@ -53,7 +52,7 @@ const App = () => {
 
 
   const loginForm = () => (
-    <LoginForm setUsername={setUsername} setPassword={setPassword} handleLogin={handleLogin} username={username} password={password} />
+    <LoginForm handleLogin={handleLogin} username={username} password={password} />
   )
 
   function logout() {

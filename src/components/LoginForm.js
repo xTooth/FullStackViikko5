@@ -3,8 +3,6 @@ import React from 'react'
 
 const loginForm = ({
   handleLogin,
-  setUsername,
-  setPassword,
   username,
   password
 }) => {
@@ -14,18 +12,18 @@ const loginForm = ({
                 käyttäjätunnus
         <input
           type="text"
-          value={username}
+          value={username.value}
           name="Username"
-          onChange={({ target }) => setUsername(target.value)}
+          onChange= {username.onChange}
         />
       </div>
       <div>
                 salasana
         <input
           type="password"
-          value={password}
+          value={password.value}
           name="Password"
-          onChange={({ target }) => setPassword(target.value)}
+          onChange= {password.onChange}
         />
       </div>
       <button type="submit">kirjaudu</button>
@@ -35,10 +33,8 @@ const loginForm = ({
 
 loginForm.propTypes = {
   handleLogin: PropTypes.func.isRequired,
-  setUsername: PropTypes.func.isRequired,
-  setPassword: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired
+  username: PropTypes.object.isRequired,
+  password: PropTypes.object.isRequired
 }
 
 export default loginForm
